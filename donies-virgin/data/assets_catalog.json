@@ -1,0 +1,15 @@
+[
+  {
+    "filename": "starter_sample_clip.mp4",
+    "video_path": "data/media/starter_sample_clip.mp4",
+    "source_type": "channel_authentic",
+    "duration_sec": 12.5,
+    "dimensions": [1080, 1920],
+    "description": "Starter sample footage clip for Virgin Channel testing.",
+    "energy_level": "medium",
+    "camera_movement": "static",
+    "tags": ["sample", "starter", "background"],
+    "usage_count": 0,
+    "last_used_at": null
+  }
+]

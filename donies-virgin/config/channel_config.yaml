@@ -1,0 +1,91 @@
+# DONIES VIRGIN — CHANNEL CONFIGURATION TEMPLATE
+# Defines isolated channel identity, niche, brand voice, and persistence targets.
+# Configure this file to connect this Virgin clone to any independent YouTube channel.
+
+channel:
+  id: "UC_REPLACE_WITH_VIRGIN_CHANNEL_ID"
+  handle: "@VirginChannelHandle"
+  name: "Virgin Channel Name"
+  url: "https://www.youtube.com/@VirginChannelHandle"
+  description: "High-retention automated YouTube Shorts channel powered by Donies Agentic Studio."
+
+niche:
+  primary_topic: "Pet Facts & Animal Psychology" # Changeable: e.g. "Tech & AI News", "Finance", "Stoicism"
+  sub_topics:
+    - "Behavioral Psychology"
+    - "Fascinating Biological Facts"
+    - "Emotional Bonding Stories"
+  target_audience: "Gen Z & Millennials (18-35), animal lovers, visual mobile viewers"
+  language: "id-ID" # Indonesian casual, high-tempo, authentic tone
+  slang_register: "Tongkrongan cerdas, santai, natural, zero corporate bullshit"
+
+content_rules:
+  script:
+    min_words: 108
+    max_words: 124
+    target_duration_sec: 50.0
+    max_duration_sec: 58.5
+    hook_duration_sec: 4.5
+    pacing_wpm: 140 # Words per minute
+  structure:
+    hook: "Provocative open-loop question or startling observation in first 3 words"
+    second_hook: "Re-hook at second 4-5 to defeat the swipe-away reflex"
+    body: "Rapid 3-part progression with acoustic punctuation [gasps], [excited]"
+    outro_cta: "Explicit verbal and visual call-to-action"
+  cta:
+    verbal: "Jangan lupa follow dan subscribe ya!"
+    visual_title: "SUBSCRIBE"
+    visual_subtitle: "Dapatkan info seru setiap hari!"
+
+voice_identity:
+  provider: "elevenlabs"
+  voice_id: "21m00Tcm4TlvDq8ikWAM" # Replace with your custom ElevenLabs Voice ID (e.g. Vivan, Rachel, Adam)
+  model_id: "eleven_multilingual_v2"
+  stability: 0.50
+  similarity_boost: 0.80
+  style: 0.15
+  use_speaker_boost: true
+  loudness_target_lufs: -14.5 # EBU R128 compliance target
+
+visual_identity:
+  resolution: [1080, 1920]
+  aspect_ratio: "9:16"
+  fps: 30
+  typography:
+    hook_font: "TheBoldFont"
+    subtitle_font: "Montserrat-Bold"
+    subtitle_highlight_color: "#FFD700" # Vivid Gold
+    subtitle_normal_color: "#FFFFFF" # Pure White
+    subtitle_stroke_color: "#000000"
+    subtitle_stroke_width: 8
+  badge:
+    enabled: true
+    title: "VIRGIN EXCLUSIVE"
+    color: "#E50914"
+
+persistence:
+  # Strict Database Isolation:
+  # Virgin uses 'virgin_' table prefix to guarantee zero mutation of production doniesdaily_* tables!
+  postgres:
+    schema: "ai_brain"
+    table_prefix: "virgin_"
+    tables:
+      posts: "virgin_posts"
+      ideas: "virgin_content_ideas"
+      queue: "virgin_production_queue"
+      learnings: "virgin_learnings"
+      metrics: "virgin_metrics_history"
+      clip_usage: "virgin_clip_usage"
+      sniper_logs: "virgin_sniper_logs"
+  sqlite:
+    swarm_db: "data/virgin_agents_chat.db"
+    channel: "virgin_studio"
+
+integrations:
+  youtube_oauth:
+    client_secrets_path: "config/virgin_client_secrets.json"
+    oauth_token_path: "config/virgin_oauth_token.json"
+  storage:
+    catalog_path: "data/assets_catalog.json"
+    cache_overlay_dir: "/tmp/virgin_overlays"
+    output_dir: "output/master_renders"

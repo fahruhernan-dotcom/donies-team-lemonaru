@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-07",
+  "slots": {
+    "morning": {
+      "base_hour": 8,
+      "target_minute": 24,
+      "target_second": 30,
+      "consumed": false,
+      "consumed_at": null,
+      "video_id": null
+    },
+    "midday_serial": {
+      "base_hour": 12,
+      "target_minute": 15,
+      "target_second": 45,
+      "consumed": false,
+      "consumed_at": null,
+      "video_id": null
+    },
+    "evening": {
+      "base_hour": 18,
+      "target_minute": 32,
+      "target_second": 10,
+      "consumed": false,
+      "consumed_at": null,
+      "video_id": null
+    }
+  }
+}

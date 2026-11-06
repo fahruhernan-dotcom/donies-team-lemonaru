@@ -1,0 +1,132 @@
+# DONIES VIRGIN — TEAM MANIFEST CONFIGURATION
+# Preserves exact agent hierarchy, identities, models, and execution roles.
+
+team:
+  id: "donies_virgin"
+  name: "Donies Virgin Agentic Studio"
+  version: "1.0.0"
+  description: "Faithful logical duplicate of Donies Daily autonomous squad"
+
+agents:
+  doni:
+    name: "Ketua Doni"
+    handle: "@doni"
+    hierarchy_tier: "Tier 1 - Executive Lead"
+    role: "Creative Lead, Executive Producer & Squad Chairman"
+    model: "gemini-4-argon-high"
+    provider: "cliproxy"
+    endpoint: "http://127.0.0.1:8317/v1"
+    temperature: 0.7
+    soul_file: "souls/DONI_SOUL.md"
+    responsibilities:
+      - "Orchestrate daily standup (07:30 & 17:30 WIB)"
+      - "Enforce 3 Shorts/day publishing cadence"
+      - "Stage 1 pre-sprint strategic evaluation"
+      - "Stage 2 editorial sign-off"
+      - "Post-release audit & Obsidian devlog sync"
+
+  mochi:
+    name: "Mochi"
+    handle: "@mochi"
+    hierarchy_tier: "Tier 2 - Analytics & Retention Specialist"
+    role: "Head of Analytics & Retention Forensics"
+    model: "gemini-4-argon-high"
+    provider: "cliproxy"
+    endpoint: "http://127.0.0.1:8317/v1"
+    temperature: 0.2
+    soul_file: "souls/MOCHI_SOUL.md"
+    responsibilities:
+      - "Ingest YouTube Studio Advanced Mode metrics via CDP (:9222)"
+      - "Query 100-point audienceWatchRatio curves via YouTube Analytics API v2"
+      - "Identify second-by-second drop-off points"
+      - "Update active learning rules in database"
+
+  luna:
+    name: "Luna"
+    handle: "@luna"
+    hierarchy_tier: "Tier 2 - Content Specialist"
+    role: "Master Scriptwriter & Storyteller"
+    model: "claude-sonnet-5-5-high"
+    provider: "cliproxy"
+    endpoint: "http://127.0.0.1:8317/v1"
+    temperature: 0.7
+    soul_file: "souls/LUNA_SOUL.md"
+    responsibilities:
+      - "Craft 108-124 word high-retention Indonesian scripts"
+      - "Engineer 4.5s second-hook open loop"
+      - "Apply acoustic punctuation & emotional SSML tags"
+      - "Apply phonetic pronunciation filters"
+      - "Enforce channel CTA"
+
+  milo:
+    name: "Milo"
+    handle: "@milo"
+    hierarchy_tier: "Tier 2 - Visual Director"
+    role: "Visual Director & Remotion Cut Planner"
+    model: "claude-opus-5-5-high"
+    provider: "cliproxy"
+    endpoint: "http://127.0.0.1:8317/v1"
+    temperature: 0.4
+    soul_file: "souls/MILO_SOUL.md"
+    responsibilities:
+      - "Select B-roll footage mapped to speech-beats"
+      - "Enforce anti-fatigue clip usage tracking"
+      - "Plan 14-18 fast dynamic cuts"
+      - "Configure Remotion kinetic overlay and SFX triggers"
+
+  ceria:
+    name: "Kak Ceria"
+    handle: "@ceria"
+    hierarchy_tier: "Tier 2 - Audio & Community Lead"
+    role: "Senior Voice Director & Community Lead"
+    model: "elevenlabs-multilingual-v2"
+    provider: "elevenlabs"
+    soul_file: "souls/KAK_CERIA_SOUL.md"
+    responsibilities:
+      - "Supervise voice delivery and emotional pitch"
+      - "Auto-reply to audience comments with community persona"
+      - "Manage engagement sentiment"
+
+  vivan:
+    name: "Vivan"
+    handle: "@vivan"
+    hierarchy_tier: "Tier 3 - Technical Voice Worker"
+    role: "Sub-Unit Voice Synthesizer & Dataset Harvester"
+    model: "0-token-worker"
+    provider: "elevenlabs_api"
+    soul_file: "souls/VIVAN_SOUL.md"
+    responsibilities:
+      - "Synthesize high-fidelity voiceover stems"
+      - "Extract word-level timestamp JSON"
+      - "Harvest 24kHz mono slices for voice fine-tuning"
+
+  cleo:
+    name: "Cleo"
+    handle: "@cleo"
+    hierarchy_tier: "Tier 3 - QC Gatekeeper"
+    role: "Broadcast Quality Control Gatekeeper"
+    model: "0-token-deterministic"
+    provider: "ffmpeg_ffprobe"
+    soul_file: "souls/CLEO_SOUL.md"
+    responsibilities:
+      - "Assert 1080x1920 (9:16) resolution"
+      - "Enforce strict duration limits (10.0s - 59.9s)"
+      - "Measure EBU R128 loudness (-14.0 to -19.0 LUFS)"
+      - "Detect black frames & AV sync drift"
+      - "Veto non-compliant renders & trigger retry loop"
+
+orchestration:
+  daily_slots:
+    morning:
+      window: "08:00 - 09:30 WIB"
+      category: "daily_fact"
+    midday_serial:
+      window: "12:00 - 13:00 WIB"
+      category: "narrative_serial"
+    evening:
+      window: "18:00 - 19:30 WIB"
+      category: "daily_story"
+  min_cooldown_minutes: 110
+  max_daily_posts: 3
+  max_retry_attempts: 3
+  jitter_file: "data/doni_daily_jitter.json"

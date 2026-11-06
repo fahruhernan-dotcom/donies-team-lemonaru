@@ -1,0 +1,82 @@
+[
+  {
+    "id": "01_taco_bell_bong",
+    "filename": "sfx_taco_bell_bong.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_taco_bell_bong.mp3",
+    "duration_sec": 1.6,
+    "label": "Taco Bell Bong (Lonceng Dentang Viral)",
+    "use_case": "Momen sadar, epiphany, teks hook pembuka, pukulan realita"
+  },
+  {
+    "id": "02_vine_boom",
+    "filename": "sfx_vine_boom.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_vine_boom.mp3",
+    "duration_sec": 1.85,
+    "label": "Vine Boom (Bass Thud Dramatis)",
+    "use_case": "Plot twist, momen syok, kata peringatan, ancaman, Spook ngamuk"
+  },
+  {
+    "id": "03_yellow_undertale",
+    "filename": "sfx_yellow_undertale_chime.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_yellow_undertale_chime.mp3",
+    "duration_sec": 0.8,
+    "label": "Undertale Text Chime (Pop-up Teks Game)",
+    "use_case": "Subtitle kunci, angka penting, trivia fakta anabul"
+  },
+  {
+    "id": "04_violin_screech",
+    "filename": "sfx_violin_screech_horror.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_violin_screech_horror.mp3",
+    "duration_sec": 2.7,
+    "label": "Violin Screech Psycho (Tension / Ketegangan Komedi)",
+    "use_case": "Spook menatap tajam, momen hening sebelum meledak, menahan lapar"
+  },
+  {
+    "id": "05_correct_ding",
+    "filename": "sfx_correct_ding.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_correct_ding.mp3",
+    "duration_sec": 0.8,
+    "label": "Correct Chime (Jawaban Benar / Berhasil)",
+    "use_case": "Spook berhasil diam, tips edukasi benar, solusi sukses"
+  },
+  {
+    "id": "06_anime_wow",
+    "filename": "sfx_anime_wow.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_anime_wow.mp3",
+    "duration_sec": 1.35,
+    "label": "Anime Wow (Kagum / Terpukau Lucu)",
+    "use_case": "Momen kucing gemas, perubahan Spook jadi kucing ningrat, takjub"
+  },
+  {
+    "id": "07_akh_screaming",
+    "filename": "sfx_akh_groan_fail.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_akh_groan_fail.mp3",
+    "duration_sec": 1.5,
+    "label": "Akhh Groan / Shout (Keluhan / Frustrasi Komedi)",
+    "use_case": "Spook gagal dapet makanan, protes kucing rewel, majikan lelah"
+  },
+  {
+    "id": "08_kaching_cash",
+    "filename": "sfx_kaching_cash_register.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_kaching_cash_register.mp3",
+    "duration_sec": 1.0,
+    "label": "Kaching Cash Register (Duit / Reward Masuk)",
+    "use_case": "Wet food turun, reward berhasil diberikan, profit/keuntungan"
+  },
+  {
+    "id": "09_tindeck_squeak",
+    "filename": "sfx_tindeck_toy_squeak.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_tindeck_toy_squeak.mp3",
+    "duration_sec": 0.8,
+    "label": "Toy Squeak / Quack (Bunyi Mainan Karet Lucu)",
+    "use_case": "Kucing jalan ngesot, tingkah konyol, kedip mata, melet"
+  },
+  {
+    "id": "10_dry_fart",
+    "filename": "sfx_dry_fart_meme.mp3",
+    "filepath": "/home/ubuntu/donies-team-lemonaru/donies-virgin/assets/audio/sfx/sfx_dry_fart_meme.mp3",
+    "duration_sec": 0.7,
+    "label": "Dry Fart Meme (Kentut Kering Kartun)",
+    "use_case": "Rencana Spook gatot, momen antiklimaks, muka pasrah"
+  }
+]

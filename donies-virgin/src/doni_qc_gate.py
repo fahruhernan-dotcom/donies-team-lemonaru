@@ -7,11 +7,19 @@ import os
 import sys
 import json
 import re
+import argparse
 import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional, Union, List
 
-def inspect_video(video_path: str, audio_path: Optional[str] = None) -> Dict[str, Any]:
+def inspect_video(
+    video_path: str,
+    audio_path: Optional[str] = None,
+    script_text: str = "",
+    title: str = "",
+    hook_banner: str = "",
+    run_ai_vision: bool = True
+) -> Dict[str, Any]:
     report: Dict[str, Any] = {
         "passed": True,
         "video_path": video_path,
@@ -140,6 +148,37 @@ def inspect_video(video_path: str, audio_path: Optional[str] = None) -> Dict[str
     except Exception as e:
         report["warnings"].append(f"Loudness check error: {e}")
 
+    # 4. Cleo 2.0 AI Vision Audit (20 Chronological Frames via Gemini 3.8 Flash)
+    if run_ai_vision and report["passed"]:
+        try:
+            # Add src to path if needed
+            src_dir = str(Path(__file__).resolve().parent)
+            if src_dir not in sys.path:
+                sys.path.insert(0, src_dir)
+            from doni_ai_qc import audit_video_narrative_and_quality
+
+            ai_res = audit_video_narrative_and_quality(
+                video_path=video_path,
+                script_text=script_text,
+                title=title,
+                hook_banner=hook_banner
+            )
+            report["ai_vision"] = ai_res
+            if not ai_res.get("passed", False):
+                report["passed"] = False
+                summary_fail = ai_res.get("summary_verdict") or ai_res.get("error") or "Skor AI Vision di bawah standar kelulusan."
+                report["errors"].append(f"CLEO AI-VISION REJECTION: {summary_fail}")
+                if ai_res.get("critical_issues"):
+                    report["errors"].extend(ai_res["critical_issues"])
+            else:
+                report["metrics"]["ai_vision_score"] = ai_res.get("overall_score")
+                report["metrics"]["narrative_alignment_score"] = ai_res.get("narrative_alignment_score")
+                report["metrics"]["visual_quality_score"] = ai_res.get("visual_quality_score")
+                report["metrics"]["pacing_retention_score"] = ai_res.get("pacing_retention_score")
+                report["metrics"]["cleo_summary"] = ai_res.get("summary_verdict")
+        except Exception as e:
+            report["warnings"].append(f"AI Vision check warning: {e}")
+
     return report
 
 def audit_script_and_outro(script_text: str) -> Dict[str, Any]:
@@ -208,17 +247,27 @@ def format_cleo_stamp(report: Dict[str, Any], video_path: str) -> str:
     lufs = m.get("integrated_loudness_lufs", "N/A")
     black = 0 if m.get("black_frame_clean") else "DETECTED"
     
+    ai_score = m.get("ai_vision_score", "N/A")
+    ai_narrative = m.get("narrative_alignment_score", "N/A")
+    ai_verdict = m.get("cleo_summary", "")
+    if not ai_verdict and report.get("ai_vision"):
+        ai_verdict = report["ai_vision"].get("summary_verdict", "")
+
     stamp = f"""
 ======================================================
-[CLEO_QC_INSPECTION]
+[CLEO_QC_INSPECTION] — AI-Vision Broadcast Gatekeeper
 Target: {Path(video_path).name}
 Status: {status}
-Metrics:
+Deterministic Metrics:
   - Resolution: {res} (Aspect: 9:16)
   - Duration: {dur}s (Shorts Compliant)
   - Audio Drift: {drift}s (Tolerance <=0.5s)
   - Integrated Loudness: {lufs} LUFS (Target: -14..-19 LUFS)
   - Black Frames: {black}
+AI Vision 20-Frame Audit (Gemini 3.8 Flash):
+  - Overall Quality Score: {ai_score}/100
+  - Narrative-Visual Alignment: {ai_narrative}/100
+  - Cleo AI Verdict: {ai_verdict if ai_verdict else '(AI Vision not executed / N/A)'}
 Inspector: Cleo 🔍 — DoniesDaily Broadcast Gatekeeper
 ======================================================
 """
@@ -230,7 +279,7 @@ def update_db_qc(topic_key: str, report: Dict[str, Any]):
     err_msg = "; ".join(report.get("errors", [])).replace("'", "''")
     
     sql = f"""
-    UPDATE ai_brain.virgin_production_queue
+    UPDATE ai_brain.doniesdaily_production_queue
     SET current_stage = '{stage}',
         qc_report = '{report_json}'::jsonb,
         error_message = {'NULL' if not err_msg else f"'{err_msg}'"},
@@ -241,26 +290,61 @@ def update_db_qc(topic_key: str, report: Dict[str, Any]):
     subprocess.run(cmd, check=True)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: doni_qc_gate.py <video_path> [audio_path] [--update-db <topic_key>]")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Cleo 🔍 QC Gatekeeper (Deterministic + AI Vision)")
+    parser.add_argument("video_path", help="Path ke video MP4")
+    parser.add_argument("audio_path", nargs="?", default=None, help="Path ke audio TTS (opsional)")
+    parser.add_argument("--update-db", dest="topic_key", default=None, help="Topic key untuk update DB antrean")
+    parser.add_argument("--script", default="", help="Naskah teks atau path file naskah")
+    parser.add_argument("--title", default="", help="Judul video")
+    parser.add_argument("--hook", default="", help="Teks Hook Banner")
+    parser.add_argument("--no-ai", action="store_true", help="Lewati AI Vision (hanya tes deterministik)")
 
-    v_path = sys.argv[1]
-    a_path = None
-    topic_key_to_update = None
+    args = parser.parse_args()
 
-    idx = 2
-    while idx < len(sys.argv):
-        if sys.argv[idx] == "--update-db" and idx + 1 < len(sys.argv):
-            topic_key_to_update = sys.argv[idx + 1]
-            idx += 2
-        elif not sys.argv[idx].startswith("--") and a_path is None:
-            a_path = sys.argv[idx]
-            idx += 1
-        else:
-            idx += 1
+    v_path = args.video_path
+    a_path = args.audio_path
+    topic_key_to_update = args.topic_key
+    script_val = args.script
+    title_val = args.title
+    hook_val = args.hook
 
-    rep = inspect_video(v_path, a_path)
+    # If topic_key provided but script/title not specified, fetch from DB
+    if topic_key_to_update and (not script_val or not title_val):
+        try:
+            sql_fetch = f"""
+            SELECT title, hook_banner, COALESCE(full_script, '') 
+            FROM ai_brain.doniesdaily_content_ideas 
+            WHERE topic_key = '{topic_key_to_update}' LIMIT 1;
+            """
+            res_db = subprocess.run(
+                ["docker", "exec", "-i", "supabase-db", "psql", "-U", "postgres", "-d", "postgres", "-t", "-A", "-F", "|||", "-c", sql_fetch],
+                capture_output=True, text=True
+            )
+            if res_db.stdout.strip():
+                p_title, p_hook, p_script = res_db.stdout.strip().split("|||")
+                if not title_val:
+                    title_val = p_title
+                if not hook_val:
+                    hook_val = p_hook
+                if not script_val:
+                    script_val = p_script
+        except Exception as e:
+            print(f"Warning: Gagal menarik data naskah DB: {e}", file=sys.stderr)
+
+    if script_val and len(script_val) < 256 and Path(script_val).exists():
+        with open(script_val, "r", encoding="utf-8") as sf:
+            script_val = sf.read().strip()
+
+    run_ai = not args.no_ai
+    rep = inspect_video(
+        video_path=v_path,
+        audio_path=a_path,
+        script_text=script_val,
+        title=title_val,
+        hook_banner=hook_val,
+        run_ai_vision=run_ai
+    )
+
     print("\n" + format_cleo_stamp(rep, v_path) + "\n")
     print(json.dumps(rep, indent=2, ensure_ascii=False))
 
